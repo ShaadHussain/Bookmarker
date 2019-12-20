@@ -13,7 +13,6 @@ function saveBookmark(e) {
     }
 
     //Local Storage
-
     // localStorage.setItem('test', 'HW');
     // console.log(localStorage.getItem('test'));
     // localStorage.removeItem('test');
@@ -38,8 +37,26 @@ function saveBookmark(e) {
 
   
     }
+
+    fetchBookmarks();
     //Prevent form submission
     e.preventDefault();
+}
+
+function deleteBookmark(url) {
+    console.log(url);
+
+    var bookmarks = JSON.parse(localStorage.getItem('bookmarks')); //THIS IS STRING   
+
+    //Looping thru bookmarks
+    for (var i = 0; i < bookmarks.length; i++) {
+        if (bookmarks[i].url == url) {
+            bookmarks.splice(i, 1);
+        }
+    }
+
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    fetchBookmarks();
 }
 
 function fetchBookmarks() {
@@ -60,11 +77,9 @@ function fetchBookmarks() {
 
         bookmarksResults.innerHTML += '<div class="well">' +
                                         '<h3>' + name + 
-                                        ' <a class="btn btn-default" target="_blank" href="'+ 
-                                        url + '"> Visit </a> '
-                                        '</h3>'
-                                        + '</div>'     
+                                        ' <a class="btn btn-default" target="_blank" href="'+ url + '"> Visit </a> ' +
+                                         ' <a onclick="deleteBookmark(\'' + url + '\')" class="btn btn-danger" href="#"> Delete </a> ' +
+                                        '</h3>' +
+                                        '</div>'     
     }
-
-
 }   
