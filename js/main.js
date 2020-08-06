@@ -7,20 +7,14 @@ function saveBookmark(e) {
     var siteName = document.getElementById("siteName").value;
     var siteURL = document.getElementById("siteURL").value;
 
+    if (!validate(siteName, siteURL)) {
+        return false;
+    }
+
     var bookmark = {
         name:siteName, 
         url: siteURL
     }
-
-    //Local Storage
-    // localStorage.setItem('test', 'HW');
-    // console.log(localStorage.getItem('test'));
-    // localStorage.removeItem('test');
-    // console.log(localStorage.getItem('test'));
-
-
-
-  //  console.log(bookmark);
 
   //Test if bookmarks is null   
   if (localStorage.getItem('bookmarks') === null) {
@@ -38,9 +32,30 @@ function saveBookmark(e) {
   
     }
 
+    //Clear form after submission
+    document.getElementById('myForm').reset();
+
+    //Necessary to update the page:
     fetchBookmarks();
     //Prevent form submission
     e.preventDefault();
+}
+
+function validate(siteName, siteURL) {
+    if (!siteName || !siteURL) {
+        alert("Fill in form");
+        return false;
+    }
+
+    var expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+    var regex = new RegExp(expression);
+
+    if (!siteURL.match(regex)) {
+        alert("Invalid URL");
+        return false;
+    }
+
+    return true;
 }
 
 function deleteBookmark(url) {
